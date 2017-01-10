@@ -10,10 +10,13 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class Channel(models.Model):
     name = models.CharField(u'nome', max_length=64)
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(u'criado em', default=now)
+
+    def __str__(self):
+        return self.name
 
 
 class ChannelCategory(MPTTModel):
@@ -29,3 +32,6 @@ class ChannelCategory(MPTTModel):
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(u'criado em', default=now)
+
+    def __str__(self):
+        return self.name
