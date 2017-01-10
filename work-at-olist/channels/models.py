@@ -20,7 +20,7 @@ class Channel(models.Model):
 
 
 class ChannelCategory(MPTTModel):
-    channel = models.ForeignKey(Channel)
+    channel = models.ForeignKey(Channel, related_name='categories')
     parent = TreeForeignKey(
         'self',
         null=True,
