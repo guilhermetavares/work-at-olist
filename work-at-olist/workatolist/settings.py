@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'channels',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -61,6 +63,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'workatolist.wsgi.application'
 
+
+import dj_database_url
+
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

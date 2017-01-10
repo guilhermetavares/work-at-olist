@@ -1,23 +1,23 @@
-import uuid
-
 from __future__ import unicode_literals
+
+import uuid
 
 from django.utils.timezone import now
 from django.db import models
 
-from mptt.models import MPTTModel
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Channel(models.Model):
-	name = models.CharField(u'nome', max_length=64)
-	is_active = models.BooleanField()
+    name = models.CharField(u'nome', max_length=64)
+    is_active = models.BooleanField()
 
-	uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	created_at = models.DateTimeField(u'criado em', default=now)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(u'criado em', default=now)
 
 
 class ChannelCategory(MPTTModel):
-	channel = models.ForeignKey(Channel)
+    channel = models.ForeignKey(Channel)
     parent = TreeForeignKey(
         'self',
         null=True,
