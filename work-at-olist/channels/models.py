@@ -45,5 +45,13 @@ class ChannelCategory(MPTTModel):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(u'criado em', default=now)
 
+    @property
+    def get_parent(self):
+        if self.parent:
+            return {
+                'name': self.parent.name,
+                'uuid': self.parent.uuid,
+            }
+
     def __str__(self):
         return self.name

@@ -18,6 +18,8 @@ class ChannelDetailSerializer(serializers.ModelSerializer):
 
 
 class ChannelCategorySerializer(serializers.ModelSerializer):
+	get_parent = serializers.ReadOnlyField()
+
 	class Meta:
 		model = ChannelCategory
-		fields = ('name', 'uuid', 'parent', 'channel')
+		fields = ('name', 'uuid', 'get_parent', 'channel')
