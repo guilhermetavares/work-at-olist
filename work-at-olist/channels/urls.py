@@ -4,7 +4,7 @@ from channels import views
 
 urlpatterns = [
     url(r'^api/v1/channels/$', views.ChannelListAPIView.as_view()),
-    # url(r'^api/v1/channels/(?P<pk>[0-9]+)/$', views.SnippetDetail.as_view()),
+    url(r'^api/v1/channels/(?P<uuid>[\w-]+)/$', views.ChannelDetailAPIView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

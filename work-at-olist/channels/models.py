@@ -6,6 +6,9 @@ from django.utils.timezone import now
 from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
+from mptt.templatetags.mptt_tags import cache_tree_children
+
+from utils.mptt_utils import recursive_mptt_to_dict
 
 
 class Channel(models.Model):
@@ -17,6 +20,15 @@ class Channel(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def categories_tree(self):
+        from channels.serializers import ChannelCategorySerializer
+        queryset = cache_tree_children(self.categories.all())
+        categories = []
+        for category in queryset:
+            categories.append(recursive_mptt_to_dict(category, ChannelCategorySerializer))
+        return categories
 
 
 class ChannelCategory(MPTTModel):
