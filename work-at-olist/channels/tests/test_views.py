@@ -19,4 +19,4 @@ class ChannelViewsTestCase(TestCase):
 	def test_01_channels_list_contents(self):
 		channel = ChannelFactory.create()
 		response = self.client.get('/api/v1/channels/')
-		print(json.loads(response.content.decode()))
+		self.assertEqual(json.loads(response.content.decode()).get('count'), 1)
