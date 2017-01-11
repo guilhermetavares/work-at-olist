@@ -6,4 +6,4 @@ from .models import Channel
 class ChannelSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Channel
-		fields = ('name',)
+		fields = ('name', 'uuid')
