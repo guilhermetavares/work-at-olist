@@ -27,9 +27,7 @@ def make_channel_data(channel, csv_file):
         channel.categories.all().delete()
         for line in re.split("\n", data)[1:-1]:
             parent = None
-            print('*' * 100)
             for category in re.split("/", line):
-                print(category)
                 category = category.strip()
                 slug_category = slugify(category)
                 
@@ -44,7 +42,6 @@ def make_channel_data(channel, csv_file):
                     'name': category,
                     'slug': slug_category,
                 })
-                print('CREATE', category, category.parent)
                 parent = category
                 cache_categories.update({cache_key: category})
         ChannelCategory.objects.rebuild()
