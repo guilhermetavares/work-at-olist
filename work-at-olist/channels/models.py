@@ -23,11 +23,11 @@ class Channel(models.Model):
 
     @property
     def categories_tree(self):
-        from channels.serializers import ChannelCategorySerializer
+        from channels.serializers import SimpleChannelCategorySerializer
         queryset = cache_tree_children(self.categories.all())
         categories = []
         for category in queryset:
-            categories.append(recursive_mptt_to_dict(category, ChannelCategorySerializer))
+            categories.append(recursive_mptt_to_dict(category, SimpleChannelCategorySerializer))
         return categories
 
 
@@ -46,12 +46,25 @@ class ChannelCategory(MPTTModel):
     created_at = models.DateTimeField(u'criado em', default=now)
 
     @property
-    def get_parent(self):
+    def childrens(self):
+        from channels.serializers import SimpleChannelCategorySerializer
+        childrens = []
+        for children in self.get_children():
+            childrens.append(recursive_mptt_to_dict(children, SimpleChannelCategorySerializer))
+        return childrens
+
+    @property
+    def parents(self):
         if self.parent:
-            return {
-                'name': self.parent.name,
-                'uuid': self.parent.uuid,
-            }
+            from channels.serializers import SimpleChannelCategorySerializer
+            return recursive_mptt_to_dict(self.parent, SimpleChannelCategorySerializer, 'get_ancestors', 'parents')
+
+    @property
+    def channel_dict(self):
+        return {
+            'name': self.channel.name,
+            'uuid': self.channel.uuid,
+        }
 
     def __str__(self):
         return self.name

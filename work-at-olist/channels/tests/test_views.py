@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from django.test import TestCase
 
@@ -17,14 +18,18 @@ class ChannelViewsTestCase(TestCase):
 
 	def test_01_channels_list(self):
 		response = self.client.get('/api/v1/channels/')
-		assert response.status_code == 200
+		self.assertEqual(response.status_code, 200)
 
 	def test_02_channels_list_contents(self):
 		channel = ChannelFactory.create()
 		response = self.client.get('/api/v1/channels/')
 		self.assertEqual(self.to_json(response).get('count'), 1)
 
-	def test_03_channels_detail_contents(self):
+	def test_03_not_found_channels_detail_contents(self):
+		response = self.client.get('/api/v1/channels/{0}/'.format(uuid.uuid4()))
+		self.assertEqual(response.status_code, 404)
+
+	def test_04_channels_detail_contents(self):
 		channel = ChannelFactory.create()
 		response = self.client.get('/api/v1/channels/{0}/'.format(channel.uuid))
 		self.assertEqual(self.to_json(response).get('name'), channel.name)
@@ -33,3 +38,12 @@ class ChannelViewsTestCase(TestCase):
 		grandchildren = ChannelCategoryFactory.create(channel=channel, parent=children)
 		response = self.client.get('/api/v1/channels/{0}/'.format(channel.uuid))
 		self.assertEqual(len(self.to_json(response).get('categories_tree')), 1)
+
+	def test_05_not_found_category_detail(self):
+		response = self.client.get('/api/v1/channels/{0}/'.format(uuid.uuid4()))
+		self.assertEqual(response.status_code, 404)
+
+	def test_06_category_detail(self):
+		category = ChannelCategoryFactory.create()
+		response = self.client.get('/api/v1/category/{0}/'.format(category.uuid))
+		self.assertEqual(response.status_code, 200)

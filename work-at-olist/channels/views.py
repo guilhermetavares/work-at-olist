@@ -1,6 +1,8 @@
 from rest_framework import generics, mixins
 from rest_framework.response import Response
 
+from django.http import Http404
+
 from .models import Channel, ChannelCategory
 from .serializers import ChannelSerializer, ChannelDetailSerializer, ChannelCategorySerializer
 
