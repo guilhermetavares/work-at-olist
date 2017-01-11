@@ -33,8 +33,10 @@ def make_channel_data(channel, csv_file):
                 category = category.strip()
                 slug_category = slugify(category)
                 
-                if cache_categories.get(slug_category):
-                    parent = cache_categories.get(slug_category)
+                cache_key = '{0}_{1}'.format(parent.slug if parent else '', slug_category)
+
+                if cache_categories.get(cache_key):
+                    parent = cache_categories.get(cache_key)
                     continue
                 
                 category = channel.categories.create(**{
@@ -44,7 +46,7 @@ def make_channel_data(channel, csv_file):
                 })
                 print('CREATE', category, category.parent)
                 parent = category
-                cache_categories.update({slug_category: category})
+                cache_categories.update({cache_key: category})
         ChannelCategory.objects.rebuild()
         return {'status': True, 'message': u'Channel {0} importing successfully, total {1} categories found.'.format(channel, channel.categories.count())}
     return {'status': False, 'message': 'File not found'}
