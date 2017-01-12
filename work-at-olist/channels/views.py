@@ -14,6 +14,13 @@ class BaseAPIView(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class ChannelListAPIView(BaseAPIView):
+    """
+    Returns a list of all **active** channels in the system.
+    The list is paginate by **20** instances per page.
+    For more detail, [see here][ref].
+    [ref]: http://example.com/activating-accounts
+    """
+
     serializer_class = ChannelSerializer
 
     def get_queryset(self):
@@ -21,6 +28,13 @@ class ChannelListAPIView(BaseAPIView):
 
 
 class ChannelDetailAPIView(ChannelListAPIView):
+    """
+    This method show all data from a channel, from your uuid
+
+    * ?format=api: To show all the details of api.
+
+    * ?format=json: for json return
+    """
     serializer_class = ChannelDetailSerializer
 
     def get_object(self, uuid):
@@ -37,6 +51,13 @@ class ChannelDetailAPIView(ChannelListAPIView):
 
 
 class ChannelCategoryDetailAPIView(BaseAPIView):
+    '''
+    Returns a list of all **active** accounts in the system.
+
+    For more details on how accounts are activated please [see here][ref].
+
+    [ref]: /api/v1/channels/bfeaf7e1-4606-4887-8e10-235e4156b270?format=api
+    '''
     serializer_class = ChannelCategorySerializer
 
     def get_queryset(self):
