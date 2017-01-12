@@ -1,7 +1,9 @@
+from django.http import Http404
+
 from rest_framework import generics, mixins
 from rest_framework.response import Response
 
-from django.http import Http404
+from rest_framework_swagger import renderers
 
 from .models import Channel, ChannelCategory
 from .serializers import ChannelSerializer, ChannelDetailSerializer, ChannelCategorySerializer
@@ -15,10 +17,11 @@ class BaseAPIView(mixins.ListModelMixin, generics.GenericAPIView):
 
 class ChannelListAPIView(BaseAPIView):
     """
-    Returns a list of all **active** channels in the system.
-    The list is paginate by **20** instances per page.
-    For more detail, [see here][ref].
-    [ref]: http://example.com/activating-accounts
+    Returns a list of all **active** accounts in the system.
+
+    For more details on how accounts are activated please [see here][ref].
+
+    [ref]: https://tavares-work-at-olist.herokuapp.com/api/v1/channels/?format=json
     """
 
     serializer_class = ChannelSerializer
@@ -29,11 +32,9 @@ class ChannelListAPIView(BaseAPIView):
 
 class ChannelDetailAPIView(ChannelListAPIView):
     """
-    This method show all data from a channel, from your uuid
-
-    * ?format=api: To show all the details of api.
-
-    * ?format=json: for json return
+    Returns a fully detail of **channel**
+    Showing its category tree, [see here][ref]
+    [ref]: https://tavares-work-at-olist.herokuapp.com/api/v1/channels/bfeaf7e1-4606-4887-8e10-235e4156b270/?format=json
     """
     serializer_class = ChannelDetailSerializer
 
@@ -52,11 +53,9 @@ class ChannelDetailAPIView(ChannelListAPIView):
 
 class ChannelCategoryDetailAPIView(BaseAPIView):
     '''
-    Returns a list of all **active** accounts in the system.
-
-    For more details on how accounts are activated please [see here][ref].
-
-    [ref]: /api/v1/channels/bfeaf7e1-4606-4887-8e10-235e4156b270?format=api
+    Returns a fully detail of a **category**
+    Showing its category tree, [see here][ref]
+    [ref]: https://tavares-work-at-olist.herokuapp.com/api/v1/category/b407430e-6315-4f02-a14f-affd7f9ad81b/?format=json
     '''
     serializer_class = ChannelCategorySerializer
 
